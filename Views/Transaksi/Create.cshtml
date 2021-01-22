@@ -1,0 +1,53 @@
+@model MvcLaundry.Models.Transaksi
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Transaksi</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NamaUser" class="control-label"></label>
+                <input asp-for="NamaUser" class="form-control" />
+                <span asp-validation-for="NamaUser" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AlamatUser" class="control-label"></label>
+                <input asp-for="AlamatUser" class="form-control" />
+                <span asp-validation-for="AlamatUser" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NoHPUser" class="control-label"></label>
+                <input asp-for="NoHPUser" class="form-control" />
+                <span asp-validation-for="NoHPUser" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TglTransaksi" class="control-label"></label>
+                <input asp-for="TglTransaksi" class="form-control" />
+                <span asp-validation-for="TglTransaksi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalTransaksi" class="control-label"></label>
+                <input asp-for="TotalTransaksi" class="form-control" />
+                <span asp-validation-for="TotalTransaksi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

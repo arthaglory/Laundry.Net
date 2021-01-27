@@ -1,0 +1,65 @@
+@model IEnumerable<MvcLaundry.Models.JenisPakaian>
+
+@{
+    ViewData["Title"] = "Jenis Pakaian";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="main-content-inner">
+	<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+		<ul class="breadcrumb">
+			<li>
+				<i class="ace-icon fa fa-home home-icon"></i>
+				<a href="#">Home</a>
+			</li>
+			<li class="active">Jenis Pakaian</li>
+		</ul><!-- /.breadcrumb -->
+
+		<div class="nav-search" id="nav-search">
+			<form class="form-search">
+				<span class="input-icon">
+					<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+					<i class="ace-icon fa fa-search nav-search-icon"></i>
+				</span>
+			</form>
+		</div><!-- /.nav-search -->
+	</div>
+
+	<div class="page-content">
+        <h1>Jenis Pakaian</h1>
+
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NamaPakaian)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.HargaPerKg)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+        @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NamaPakaian)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HargaPerKg)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+	</div><!-- /.page-content -->
+</div>

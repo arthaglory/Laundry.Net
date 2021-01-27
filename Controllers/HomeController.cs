@@ -9,6 +9,9 @@ using MvcLaundry.Models;
 using Microsoft.AspNetCore.Authorization; 
 using MvcLaundry.Data; 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
+
 
 namespace MvcLaundry.Controllers
 {
@@ -46,11 +49,36 @@ namespace MvcLaundry.Controllers
         }
 
         public IActionResult OrderLaundry(){
+            var userId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ViewData["JenisPakaianId"] = new SelectList(_context.JenisPakaian, "Id", "NamaPakaian");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["UserId1"] = userId.ToString();
             return View();
         }
 
-        public IActionResult RiwayatTransaksi(){
-            return View();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OrderLaundry([Bind("Id,NamaUser,AlamatUser,NoHPUser,TglTransaksi,TotalTransaksi,JenisPakaianId,UserId")] Transaksi transaksi)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(transaksi);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["JenisPakaianId"] = new SelectList(_context.JenisPakaian, "Id", "Id", transaksi.JenisPakaianId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", transaksi.UserId);
+            return View("Home");
+        }
+
+        public async Task<IActionResult> RiwayatTransaksi(){
+            var userId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var transaksi = await _context.Transaksi
+                .Include(t => t.JenisPakaian)
+                .Include(t => t.Users)
+                .FirstOrDefaultAsync(m => m.UserId.Equals(userId.ToString()));
+            var mvcLaundryContext = _context.Transaksi.Include(t => t.JenisPakaian).Include(t => t.Users);
+            return View(await mvcLaundryContext.ToListAsync());
         }
 
         public IActionResult ContactUs(){

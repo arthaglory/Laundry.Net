@@ -44,7 +44,8 @@ namespace MvcLaundry.Controllers
                     new Claim(ClaimTypes.Name, user.Name),  
                     new Claim(ClaimTypes.Email, user.EmailId),  
                     new Claim(ClaimTypes.DateOfBirth, user.DateOfBirth),  
-                    new Claim(ClaimTypes.Role, user.Role)   
+                    new Claim(ClaimTypes.Role, user.Role),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())   
                  };  
   
                 var grandmaIdentity = new ClaimsIdentity(userClaims, "User Identity");  

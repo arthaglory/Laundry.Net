@@ -51,32 +51,44 @@ namespace MvcLaundry.Migrations
                     NoHPUser = table.Column<string>(nullable: true),
                     TglTransaksi = table.Column<DateTime>(nullable: false),
                     TotalTransaksi = table.Column<int>(nullable: false),
-                    UsersId = table.Column<int>(nullable: true)
+                    JenisPakaianId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Transaksi", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Transaksi_Users_UsersId",
-                        column: x => x.UsersId,
+                        name: "FK_Transaksi_JenisPakaian_JenisPakaianId",
+                        column: x => x.JenisPakaianId,
+                        principalTable: "JenisPakaian",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Transaksi_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transaksi_UsersId",
+                name: "IX_Transaksi_JenisPakaianId",
                 table: "Transaksi",
-                column: "UsersId");
+                column: "JenisPakaianId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transaksi_UserId",
+                table: "Transaksi",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "JenisPakaian");
+                name: "Transaksi");
 
             migrationBuilder.DropTable(
-                name: "Transaksi");
+                name: "JenisPakaian");
 
             migrationBuilder.DropTable(
                 name: "Users");

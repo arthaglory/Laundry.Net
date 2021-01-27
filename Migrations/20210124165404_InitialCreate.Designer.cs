@@ -9,7 +9,7 @@ using MvcLaundry.Data;
 namespace MvcLaundry.Migrations
 {
     [DbContext(typeof(MvcLaundryContext))]
-    [Migration("20210122021550_InitialCreate")]
+    [Migration("20210124165404_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,6 +44,9 @@ namespace MvcLaundry.Migrations
                     b.Property<string>("AlamatUser")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("JenisPakaianId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("NamaUser")
                         .HasColumnType("TEXT");
 
@@ -56,12 +59,14 @@ namespace MvcLaundry.Migrations
                     b.Property<int>("TotalTransaksi")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("UsersId")
+                    b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("JenisPakaianId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Transaksi");
                 });
@@ -100,9 +105,17 @@ namespace MvcLaundry.Migrations
 
             modelBuilder.Entity("MvcLaundry.Models.Transaksi", b =>
                 {
+                    b.HasOne("MvcLaundry.Models.JenisPakaian", "JenisPakaian")
+                        .WithMany()
+                        .HasForeignKey("JenisPakaianId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MvcLaundry.Models.Users", "Users")
                         .WithMany()
-                        .HasForeignKey("UsersId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

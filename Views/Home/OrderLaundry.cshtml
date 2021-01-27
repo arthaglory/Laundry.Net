@@ -1,3 +1,6 @@
+@using MvcLaundry.Models
+@using Microsoft.EntityFrameworkCore;
+@model MvcLaundry.Models.Transaksi
 @{
     ViewData["Title"] = "Order - Laundry";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
@@ -12,22 +15,36 @@
 
         <div class="row">
           <div class="col-lg-12" data-aos="fade-up" data-aos-delay="300">
-            <form action="#" method="post" role="form" class="php-email-form">
+            <form asp-action="OrderLaundry" role="form" class="php-email-form">
+              <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
               <div class="row">
                 <div class="col-lg-6" data-aos="fade-up">
                   <div class="form-row">
                     <div class="col-lg-6 form-group">
-                      <input type="text" name="name_user" class="form-control" id="name_user" placeholder="Nama" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-                      <div class="validate"></div>
+                      <input type="text" asp-for="NamaUser" class="form-control" placeholder="Nama" />
+                      <span asp-validation-for="NamaUser" class="text-danger"></span>
                     </div>
                     <div class="col-lg-6 form-group">
-                      <input type="email" class="form-control" name="no_hp_user" id="no_hp_user" placeholder="No HP" data-rule="email" data-msg="Please enter a valid email" />
-                      <div class="validate"></div>
+                      <input type="text" asp-for="NoHPUser" class="form-control"  placeholder="No HP"/>
+                      <span asp-validation-for="NoHPUser" class="text-danger"></span>
+                    </div>
+                    <div class="col-lg-6 form-group">
+                      <input type="date" asp-for="TglTransaksi" class="form-control"  placeholder="Tanggal Transaksi" />
+                      <span asp-validation-for="TglTransaksi" class="text-danger"></span>
+                    </div>
+                    <div class="col-lg-6 form-group">
+                      <input type="text" asp-for="TotalTransaksi" class="form-control"  placeholder="Total Transaksi" />
+                      <span asp-validation-for="TotalTransaksi" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                      <label asp-for="JenisPakaianId" class="control-label"></label>
+                      <select asp-for="JenisPakaianId" class ="form-control" asp-items="ViewBag.JenisPakaianId"></select>
                     </div>
                   </div>
                   <div class="form-group">
-                    <textarea class="form-control" name="Alamat" rows="5" data-rule="required" data-msg="Alamat" placeholder="Alamat"></textarea>
-                    <div class="validate"></div>
+                    <textarea asp-for="AlamatUser" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="AlamatUser" class="text-danger"></span>
                   </div>
                   <div class="mb-3">
                     <div class="loading">Loading</div>
@@ -37,7 +54,18 @@
                   <div class="text-center"><button type="submit">Order</button></div>
                 </div>
 
-                <div class="col-lg-6" data-aos="fade-up" style="background-color: #5c768d;">
+                <div class="col-lg-6" data-aos="fade-up">
+                  <div class="btn-group">
+                    <input type="hidden" asp-for="UserId" class="form-control"  placeholder="Total Transaksi" value='@ViewData["UserId1"]'/>
+                      
+                    
+                    @* @User.Identity.Name
+                    @ViewData["UserId1"] *@
+                    @* @foreach (var prod in (List<JenisPakaian>)ViewBag.JenisPakaianId) {
+                      <input asp-for="UserId" type="radio" class="btn-check" id="prod.Id "autocomplete="off" />
+                      <label class="btn btn-secondary" for="option2">Radio</label>
+                    } *@
+                  </div>
                 </div>
               </div>
             </form>
@@ -48,7 +76,7 @@
       </div>
     </section><!-- End Contact Us Section -->
 
-<script>
+@* <script>
 $('#addRow').on('click', function () {
     $('#ProData').append('<div id="RowData" class="Row"><div class="Cell">Test</div><div class="Cell">Test</div><div class="Cell">Test</div><div class="Cell">Test</div><div class="Cell">Test</div><div class="Cell">Test</div> <a id="deleteRow" ><i style="vertical-align:middle;font-size: 32px" class="fa fa-minus-square"></i></a> </div> ');
     $('#ProData').addClass();
@@ -61,4 +89,4 @@ $('#ProData').on('click', '#deleteRow', function () {
     return false; //prevent form submission
     });
  
-</script>
+</script> *@

@@ -22,7 +22,8 @@ namespace MvcLaundry.Controllers.admin
         // GET: Transaksi
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Transaksi.ToListAsync());
+            var mvcLaundryContext = _context.Transaksi.Include(t => t.JenisPakaian).Include(t => t.Users);
+            return View(await mvcLaundryContext.ToListAsync());
         }
 
         // GET: Transaksi/Details/5
@@ -34,6 +35,8 @@ namespace MvcLaundry.Controllers.admin
             }
 
             var transaksi = await _context.Transaksi
+                .Include(t => t.JenisPakaian)
+                .Include(t => t.Users)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (transaksi == null)
             {
@@ -46,6 +49,8 @@ namespace MvcLaundry.Controllers.admin
         // GET: Transaksi/Create
         public IActionResult Create()
         {
+            ViewData["JenisPakaianId"] = new SelectList(_context.JenisPakaian, "Id", "Id");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -54,7 +59,7 @@ namespace MvcLaundry.Controllers.admin
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NamaUser,AlamatUser,NoHPUser,TglTransaksi,TotalTransaksi")] Transaksi transaksi)
+        public async Task<IActionResult> Create([Bind("Id,NamaUser,AlamatUser,NoHPUser,TglTransaksi,TotalTransaksi,JenisPakaianId,UserId")] Transaksi transaksi)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +67,8 @@ namespace MvcLaundry.Controllers.admin
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["JenisPakaianId"] = new SelectList(_context.JenisPakaian, "Id", "Id", transaksi.JenisPakaianId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", transaksi.UserId);
             return View(transaksi);
         }
 
@@ -78,6 +85,8 @@ namespace MvcLaundry.Controllers.admin
             {
                 return NotFound();
             }
+            ViewData["JenisPakaianId"] = new SelectList(_context.JenisPakaian, "Id", "Id", transaksi.JenisPakaianId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", transaksi.UserId);
             return View(transaksi);
         }
 
@@ -86,7 +95,7 @@ namespace MvcLaundry.Controllers.admin
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NamaUser,AlamatUser,NoHPUser,TglTransaksi,TotalTransaksi")] Transaksi transaksi)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NamaUser,AlamatUser,NoHPUser,TglTransaksi,TotalTransaksi,JenisPakaianId,UserId")] Transaksi transaksi)
         {
             if (id != transaksi.Id)
             {
@@ -113,6 +122,8 @@ namespace MvcLaundry.Controllers.admin
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["JenisPakaianId"] = new SelectList(_context.JenisPakaian, "Id", "Id", transaksi.JenisPakaianId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", transaksi.UserId);
             return View(transaksi);
         }
 
@@ -125,6 +136,8 @@ namespace MvcLaundry.Controllers.admin
             }
 
             var transaksi = await _context.Transaksi
+                .Include(t => t.JenisPakaian)
+                .Include(t => t.Users)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (transaksi == null)
             {
